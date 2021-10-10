@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 project(Thread_1)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 include(FetchContent)
 FetchContent_Declare(googletest
@@ -16,9 +16,14 @@ FetchContent_MakeAvailable(
         googletest
         googlebenchmark)
 
-set(Lib lib/embedding.cc lib/instruction.cc lib/utils.cc lib/model.cc)
+find_package(Threads REQUIRED)
+find_package(fmt REQUIRED)
 
-set(Targets q0 q1 q2 q3)
+include_directories(lib)
+set(Lib lib/embedding.cc lib/instruction.cc lib/utils.cc lib/model.cc lib/operation.cpp)
+
+set(Targets q0 q1 q2 q3 q4)
 foreach(target IN LISTS Targets)
     add_executable(${target} ${Lib} ${target}.cc)
+    target_link_libraries(${target} fmt Threads::Threads)
 endforeach()

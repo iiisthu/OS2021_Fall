@@ -7,9 +7,9 @@
 #include "lib/operation.h"
 
 int main() {
-    auto users = proj1::EmbeddingHolder("data/q1.in");
-    auto items = proj1::EmbeddingHolder("data/q1.in");
-    proj1::Instructions instructions = proj1::read_instructrions("data/q1_instruction.tsv");
+    auto users = proj1::EmbeddingHolder("data/q4.in");
+    auto items = proj1::EmbeddingHolder("data/q4.in");
+    proj1::Instructions instructions = proj1::read_instructrions("data/q4_instruction.tsv");
 
     proj1::work(users, items, instructions);
 
