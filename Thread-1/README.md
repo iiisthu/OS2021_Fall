@@ -162,7 +162,7 @@ https://docs.bazel.build/versions/main/tutorial/cpp.html
 
 
 > **_NOTE:_** You can take this task's code as an example and benchmark for following tasks, 
-but do not copy and paste this unoptimized code! Otherwise you will get penalized.
+but do not copy and paste this unoptimized code! Otherwise you will get penalized. Task-0 is not included in the final grading.
 
 ## Task-1: Supporting concurrent users
 
