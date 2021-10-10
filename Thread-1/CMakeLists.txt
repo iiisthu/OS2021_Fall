@@ -20,7 +20,7 @@ find_package(Threads REQUIRED)
 find_package(fmt REQUIRED)
 
 include_directories(lib)
-set(Lib lib/embedding.cc lib/instruction.cc lib/utils.cc lib/model.cc lib/operation.cpp)
+set(Lib lib/embedding.cc lib/instruction.cc lib/utils.cc lib/model.cc lib/operation.cc)
 
 set(Targets q0 q1 q2 q3 q4)
 foreach(target IN LISTS Targets)
