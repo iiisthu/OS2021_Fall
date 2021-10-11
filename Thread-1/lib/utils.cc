@@ -5,10 +5,13 @@
 #include <thread>
 #include "utils.h"
 
+#include <glog/logging.h>
+#include <fmt/format.h>
+
 namespace proj1 {
 
 void a_slow_function(int seconds) {
-    //std::this_thread::sleep_for(std::chrono::seconds(seconds));
+    std::this_thread::sleep_for(std::chrono::milliseconds(seconds));
 }
 
 double sigmoid(double x) {
