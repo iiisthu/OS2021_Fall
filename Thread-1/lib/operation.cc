@@ -11,6 +11,10 @@
 #include "instruction.h"
 #include "operation.h"
 
+//#include "glog/logging.h"
+//#include "fmt/core.h"
+//#include "fmt/ranges.h"
+
 namespace proj1 {
 
 void op_init_emb(EmbeddingHolder &users, const EmbeddingHolder &items, const PayloadType &payload) {
@@ -69,7 +73,9 @@ void work(EmbeddingHolder &users, EmbeddingHolder &items, const Instructions &in
             jobs_list.emplace_back([=, &lock_list, &users, &items, &inst]() {
                 auto &lock = *lock_list[newest_user_idx];
                 lock.lock();
+//                LOG(INFO) << fmt::format("init {}", newest_user_idx);
                 op_init_emb(users, items, inst.payloads);
+//                LOG(INFO) << fmt::format("init {} end", newest_user_idx);
                 lock.unlock();
             });
             newest_user_idx++;
@@ -92,7 +98,9 @@ void work(EmbeddingHolder &users, EmbeddingHolder &items, const Instructions &in
             jobs_list.emplace_back([=, &lock_list, &users, &items]() {
                 auto &lock = *lock_list[user_idx];
                 lock.lock();
+//                LOG(INFO) << fmt::format("update {}", user_idx);
                 proj1::op_update_emb(users, items, user_idx, item_idx, label);
+//                LOG(INFO) << fmt::format("update {} end", user_idx);
                 lock.unlock();
             });
         } else if (inst.order == proj1::RECOMMEND) {
@@ -100,7 +108,9 @@ void work(EmbeddingHolder &users, EmbeddingHolder &items, const Instructions &in
             jobs_list.emplace_back([=, &lock_list, &users, &items]() {
                 auto &lock = *lock_list[user_idx];
                 lock.lock_shared();
+//                LOG(INFO) << fmt::format("recommend {}", user_idx);
                 proj1::op_recommend(users, items, inst.payloads);
+//                LOG(INFO) << fmt::format("recommend {} end", user_idx);
                 lock.unlock_shared();
             });
         }

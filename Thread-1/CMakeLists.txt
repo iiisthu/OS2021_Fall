@@ -18,6 +18,7 @@ FetchContent_MakeAvailable(
 
 find_package(Threads REQUIRED)
 find_package(fmt REQUIRED)
+find_package(glog REQUIRED)
 
 include_directories(lib)
 set(Lib lib/embedding.cc lib/instruction.cc lib/utils.cc lib/model.cc lib/operation.cc)
@@ -25,5 +26,5 @@ set(Lib lib/embedding.cc lib/instruction.cc lib/utils.cc lib/model.cc lib/operat
 set(Targets q0 q1 q2 q3 q4)
 foreach(target IN LISTS Targets)
     add_executable(${target} ${Lib} ${target}.cc)
-    target_link_libraries(${target} fmt Threads::Threads)
+    target_link_libraries(${target} fmt Threads::Threads glog::glog)
 endforeach()
