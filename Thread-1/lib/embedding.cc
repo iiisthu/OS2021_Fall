@@ -53,7 +53,6 @@ void Embedding::update(Embedding* gradient, double stepsize) {
     embbedingAssert(gradient->length == this->length,
            "Gradient has different length from the embedding!", LEN_MISMATCH);
     for (int i = 0; i < this->length; ++i) {
-        a_slow_function(500);
         this->data[i] -= stepsize * gradient->data[i];
     }
 }

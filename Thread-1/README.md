@@ -194,7 +194,7 @@ under heavy and arbitary mixtures of incoming `Instruction`s.
 Now the engineers find that it is still too slow to conduct each "init" task, as each of the task need to read multiple 
 embeddings to perform the init.  
 They hope to read and use these embeddings concurrently so shorten the time required to call a single "init".
-we can further speed up the process by building a internally-concurrent "init" function. 
+We can further speed up the process by building a internally-concurrent "init" function.
 
 **ToDo:**
 
@@ -215,7 +215,7 @@ algorithm. This algorithm requires the optimizer to update the embeddings iterat
 **ToDo:**
 
 In this task, you should deal with the data dependency among `Instruction` s. The input `Instruction`  set contains both "init" and "update" tasks. The `iter_idx`s are in ascending order, and takes nonnegative integer values starting from 0. One  `Instruction` should be executed only after all  `Instruction` s with smaller `iter_idx`s are completed to guarantee the dependency correctness (using data from the last iteration as input).  You can start with your codes in Task-2 and try to make all 
-`Instruction`  execution parrallel and thread-safety. Output your final `EmbeddingHolder` of users using `EmbeddingHolder::write_to_stdout()`.
+`Instruction`  execution parrallel and thread-safety. Output your final `EmbeddingHolder` of **1) users and 2) items** using `EmbeddingHolder::write_to_stdout()`.
 
 **Grading:**
 
