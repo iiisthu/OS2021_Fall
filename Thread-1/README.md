@@ -33,7 +33,7 @@ processing) indicates the similarity of the two corresponding entities.
 
 ### Operations on Embedding Vectors
 
-Two important operations on the embedding vectors are
+Three important operations on the embedding vectors are
 
 1. Initializing (`init_embedding`) the vectors on cold start (`cold_start`) ;
 2. Updating the vectors after observing user activities (`update`).
@@ -110,9 +110,9 @@ Writing unit tests is an essential way to build and optimize system programs
 and thus we would require that you include unit tests for all major functions
 you write for your code. 
 
-We have provided test cases in the libraries for you as examples.  
-Please do not modify these unit tests.  You can modify library code, and add your own test cases
-to the library test, but make sure that after your modification, our provided test cases still pass. 
+We have provided test cases in the libraries for you as examples. Please do not
+modify these unit tests.  You can modify library code, and add your own test cases
+to the library test, but make sure that after your modification, our provided test cases still pass.
 
 ### Format Checking
 
@@ -126,19 +126,25 @@ bazel-bin/q0 |grep [OUTPUT] > format.out && bazel-bin/format
 
 The workload of the company comes as `Instruction`s with `order` and `payload`
 fields. Both fields are integers. In this project, the `Instruction.order` is
-either 0,1 or 2, indicating the task of "init", "update" or "recommend". The workflow
+either 0, 1 or 2, indicating the task of "init", "update" or "recommend". The workflow
 of different task types are different as described bellow.
 
 - For **“init”**, you should first create a new embedding. The payload is a
-  list of existing embedding indeces in the input matrix (`EmbeddingHolder`) that are used for cold  start (downstream applications may use them for interest probing).  You should add this new  embedding into the `EmbeddingHolder` using `append`. Then you need to call `cold_start`  for each of the embedding indeces, see `q0.cc` for example.
+  list of existing embedding indeces in the input matrix (`EmbeddingHolder`) that
+  are used for cold  start (downstream applications may use them for interest
+  probing). You should add this new  embedding into the `EmbeddingHolder` using
+  `append`. Then you need to call `cold_start`  for each of the embedding
+  indeces. Note that after `cold_start`, **only user embeddings are updated**
+  (see `q0.cc` for example).
 
-- For **“update”**, the payload is `[embA_idx, embB_idx, label, (iter_idx)]`. You should invoke
+- For **“update”**, the payload is `[user_idx, item_idx, label, (iter_idx)]`. You should invoke
   the `calc_gradient` on these two embedding vectors from `lib/model.h` and then
-  call `update_embedding` from `lib/embedding.h`, see`project/embedding.cc:run_q0` for example.
-  The `iter_idx` indicates the epoch number of current update, see Task-3 for information.
-- For **"recommend"**, the the payload is `[iter_idx, emb_idx1, emb_idx2, emb_idx3, emb_idx4, ...]`. You should invoke the `recommend` on these six embedding vectors from `lib/model.h` and then output the result. 
+  call `update_embedding` from `lib/embedding.h` **on both the user and the items**
+  (see`project/embedding.cc:run_q0` for example). The `iter_idx` indicates the
+  epoch number of current update, see Task-3 for information.
+- For **"recommend"**, the the payload is `[user_idx, iter_idx, item_idx1, item_idx2, item_idx3, item_idx4, ...]`. You should invoke the `recommend` on these embedding vectors from `lib/model.h` and then output the result. 
 
-Note that NO provided functions are thread safe on their own. 
+Note that NO provided functions are thread safe on their own.
 
 ### Other coding instructions
 
@@ -149,12 +155,17 @@ C++ threading library (such as pthread, or Intel's TBB to do the following task)
 
 ## Submission instuctions
 
-You should send a pull request (PR) to the project's main repo.  On learn.tsinghua, submit the link to your pull request.  
+You should create a `.diff` file of your latest commit from the latest commit of the main project on learn.tsinghua, as follows:
+
+```bash
+git diff YOUR_COMMIT_SHA1 MAIN_REPO_COMMIT_SHA1 > ${STUDENT_ID_1}_${STUDENT_ID_2}.diff
+```
+
+To test whether your `.diff` works, clone a new repo and call `git apply ${STUDENT_ID_1}_${STUDENT_ID_2}.diff` and see if your code still works.
 
 ## Task-0: Play with bazel build, the code and sanity check
 
-In this task, you need to pass the first test. 
-To do this, just understand the project structure, read the `q0.cc` code and 
+In this task, you need to understand the project structure, read the `q0.cc` code and 
 the `project/BUILD` files, install bazel, build and run the provided sample program and tests. 
 This task is not included for grading.  Just provided as an example for you to read.  If you need more information
 on the Bazel build system, please refer to
@@ -163,6 +174,8 @@ https://docs.bazel.build/versions/main/tutorial/cpp.html
 
 > **_NOTE:_** You can take this task's code as an example and benchmark for following tasks, 
 but do not copy and paste this unoptimized code! Otherwise you will get penalized. Task-0 is not included in the final grading.
+
+> **_NOTE:_** Your code is not required to output exactly the same answer as `q0.cc`. You just need to guarantee your code is thread-safe.
 
 ## Task-1: Supporting concurrent users
 
@@ -173,7 +186,7 @@ the system could behave correctly and efficiently.
 
 **ToDo:**
 
-In this task, your job is to process a `Instruction` set of "init" and "update". Considering that 
+In this task, your job is to process an `Instruction` set of "init" and "update". Considering that 
 `cal_gradient`  is time-consuming (10s of seconds running time, mostly waiting for I/O), 
 you should think of handling multiple `Instruction`s concurrently. Design 
 a synchronization mechanism using locks to guarantee that your codes are thread-safe.  Output your final 
@@ -189,16 +202,18 @@ under heavy and arbitary mixtures of incoming `Instruction`s.
 
 > **_NOTE:_** In this task, a single `Instruction` only runs in a single thread (i.e. no internal parallism within an `Instruction`). 
 
+> **_NOTE:_** The correctness means thread-safety. We allow any order of updates, as long as it is thread-safe.
+
 ## Task-2: Accelerate "Init" task through concurrency
 
 Now the engineers find that it is still too slow to conduct each "init" task, as each of the task need to read multiple 
 embeddings to perform the init.  
 They hope to read and use these embeddings concurrently so shorten the time required to call a single "init".
-We can further speed up the process by building a internally-concurrent "init" function.
+We can further speed up the process by building an internally-concurrent "init" function.
 
 **ToDo:**
 
-In this task, your job is to process a `Instruction` set of "init" and "update". You can start with your codes in Task-1. Try to conduct multiple `cold_start`  parallelly and update the newly initialized embedding collectively without violating **thread-safety**.  Output your final `EmbeddingHolder` of users using the provided `EmbeddingHolder::write_to_stdout()` funciton.  Note that you still need to support multiple concurrent users. 
+In this task, your job is to process an `Instruction` set of "init" and "update". You can start with your codes in Task-1. Try to conduct multiple `cold_start`  parallelly and update the newly initialized embedding collectively without violating **thread-safety**.  Output your final `EmbeddingHolder` of users using the provided `EmbeddingHolder::write_to_stdout()` funciton.  Note that you still need to support multiple concurrent users. 
 
 **Grading:**
 
@@ -223,7 +238,7 @@ You will be graded by the correctness and efficiency of your calculation.
 
 ## Task-4: Doing recommendation while updating the embedding
 
-Except the maintenance of the recommender system, the company also needs  to generate recommends for each user using the 
+Except the maintenance of the recommender system, the company also needs  to generate recommendations for each user using the 
 existing database. The recommendation should depend on the current version of data and not disturb the maintenance of the 
 recommender system.  Note that when an embedding update is going on, you can not at the same time read the embedding, as the 
 embedding update is not an atomic operation.  As the embedding update can take a long time, and can be quite frequent, 
@@ -232,7 +247,9 @@ allowing the update to happen, and being able to use some quite recent updated e
 
 **ToDo:**
 
-In this task, the input `Instruction`  set contains all three types of tasks: "init", "update", and "recommend".  You can start with your codes in Task-3. You should output the recommend result as soon as you get it by calling the provided `Embedding::write_to_stdout()`. The delay of recommender response will impact your final score.  There is no need to output the final `EmbeddingHolder` in this tasks. 
+In this task, the input `Instruction`  set contains all three types of tasks: "init", "update", and "recommend". Note that the "recommend" instruction contains an `iter_idx`, and you should use the embeddings after the updates with index `iter_idx` finish. If a recommend instruction be scheduled before any updates, it will have `iter_idx=-1`. You can start with your codes in Task-3. You should output the recommend result as soon as you get it by calling the provided `Embedding::write_to_stdout()` (we accept all possible order of correct outputs). The delay of recommender response will impact your final score.  There is no need to output the final `EmbeddingHolder` in this tasks.
+
+> **_NOTE:_** You should keep your output function thread-safe, too.
 
 **Grading:**
 

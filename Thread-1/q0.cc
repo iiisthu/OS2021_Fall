@@ -49,7 +49,8 @@ void run_one_instruction(Instruction inst, EmbeddingHolder* users, EmbeddingHold
             int user_idx = inst.payloads[0];
             Embedding* user = users->get_embedding(user_idx);
             std::vector<Embedding*> item_pool;
-            for (unsigned int i = 1; i < inst.payloads.size(); ++i) {
+            int iter_idx = inst.payloads[1];
+            for (unsigned int i = 2; i < inst.payloads.size(); ++i) {
                 int item_idx = inst.payloads[i];
                 item_pool.push_back(items->get_embedding(item_idx));
             }
