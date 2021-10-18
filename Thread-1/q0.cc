@@ -80,5 +80,10 @@ int main(int argc, char *argv[]) {
     users->write_to_stdout();
     items->write_to_stdout();
 
+    // We only need to delete the embedding holders, as the pointers are all
+    // pointing at the emb_matx of the holders.
+    delete users;
+    delete items;
+
     return 0;
 }
