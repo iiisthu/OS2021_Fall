@@ -249,8 +249,8 @@ allowing the update to happen, and being able to use some quite recent updated e
 
 In this task, the input `Instruction`  set contains all three types of tasks: "init", "update", and "recommend". Note that the "recommend" instruction contains an `iter_idx`, and you should use the embeddings after the updates with index `iter_idx` finish. If a recommend instruction be scheduled before any updates, it will have `iter_idx=-1`. You can start with your codes in Task-3. You should output the recommend result as soon as you get it by calling the provided `Embedding::write_to_stdout()` (we accept all possible order of correct outputs). The delay of recommender response will impact your final score.  There is no need to output the final `EmbeddingHolder` in this tasks.
 
-> **_NOTE:_** You should keep your output function thread-safe, too.
+> **_NOTE:_** You should output your recommend results in a thread-safe manner, too.
 
 **Grading:**
 
-You will be graded by the correctness and delay of your calculation, as well as being able to read the updated embedding after a relatively short period of time.
+You will be graded by the correctness and delay of your recommendation (from the programs' start to recommend result output), as well as being able to read the updated embedding after a relatively short period of time.
