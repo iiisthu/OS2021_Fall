@@ -189,8 +189,7 @@ the system could behave correctly and efficiently.
 In this task, your job is to process an `Instruction` set of "init" and "update". Considering that 
 `cal_gradient`  is time-consuming (10s of seconds running time, mostly waiting for I/O), 
 you should think of handling multiple `Instruction`s concurrently. Design 
-a synchronization mechanism using locks to guarantee that your codes are thread-safe.  Output your final 
-`EmbeddingHolder` of users using the provided `EmbeddingHolder::write_to_stdout()`.
+a synchronization mechanism using locks to guarantee that your codes are thread-safe.  Output your final `EmbeddingHolder` of **1) users and 2) items** using `EmbeddingHolder::write_to_stdout()`.
 
 Again, note that NO provided functions are thread safe on their own. Feel free to modify these functions
 in the `lib/` directory, but do not modify existing test cases there (you can add your own test cases).
@@ -213,7 +212,7 @@ We can further speed up the process by building an internally-concurrent "init" 
 
 **ToDo:**
 
-In this task, your job is to process an `Instruction` set of "init" and "update". You can start with your codes in Task-1. Try to conduct multiple `cold_start`  parallelly and update the newly initialized embedding collectively without violating **thread-safety**.  Output your final `EmbeddingHolder` of users using the provided `EmbeddingHolder::write_to_stdout()` funciton.  Note that you still need to support multiple concurrent users. 
+In this task, your job is to process an `Instruction` set of "init" and "update". You can start with your codes in Task-1. Try to conduct multiple `cold_start`  parallelly and update the newly initialized embedding collectively without violating **thread-safety**. Output your final `EmbeddingHolder` of **1) users and 2) items** using `EmbeddingHolder::write_to_stdout()`.  Note that you still need to support multiple concurrent users. 
 
 **Grading:**
 
