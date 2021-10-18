@@ -148,12 +148,12 @@ Note that NO provided functions are thread safe on their own.
 
 ### Other coding instructions
 
-For the following tasks, you shold miminize duplicate code.  If there are code sharing among the following tasks, you shuold extract as much shared code as possible into separate `.h` and `.cc` library files, but not put everything into a single `.cc` file.  You should create your own `_test.cc` file for your library code.  20% of this project grade are reserved for good coding style (including the completeness of your own test cases).  
+For the following tasks, you should minimize duplicate code.  If there are code sharing among the following tasks, you should extract as much shared code as possible into separate `.h` and `.cc` library files, but not put everything into a single `.cc` file.  You should create your own `_test.cc` file for your library code.  20% of this project grade are reserved for good coding style (including the completeness of your own test cases).  
 
 We recommend you to use the standard C++11 Threading to implement multi-threading.  However, please feel free to use any other
-C++ threading library (such as pthread, or Intel's TBB to do the following task).  If you need external libraries, please include them in the `WORKSPACE` file and make them to install and build automatically.  The TAs are not obliged to manually install any libraries on the grading machine. 
+C++ threading library (such as `pthread`, or Intel's TBB to do the following task).  If you need external libraries, please include them in the `WORKSPACE` file and make them to install and build automatically.  The TAs are not obliged to manually install any libraries on the grading machine. 
 
-## Submission instuctions
+## Submission instructions
 
 You should create a `.diff` file of your latest commit from the latest commit of the main project on learn.tsinghua, as follows:
 
@@ -190,7 +190,7 @@ In this task, your job is to process an `Instruction` set of "init" and "update"
 `cal_gradient`  is time-consuming (10s of seconds running time, mostly waiting for I/O), 
 you should think of handling multiple `Instruction`s concurrently. Design 
 a synchronization mechanism using locks to guarantee that your codes are thread-safe.  Output your final 
-`EmbeddingHolder` of users using the provided `EmbeddingHolder::write_to_stdout()`.
+`EmbeddingHolder` of **1) users and 2) items** using the provided `EmbeddingHolder::write_to_stdout()`.
 
 Again, note that NO provided functions are thread safe on their own. Feel free to modify these functions
 in the `lib/` directory, but do not modify existing test cases there (you can add your own test cases).
@@ -198,9 +198,9 @@ in the `lib/` directory, but do not modify existing test cases there (you can ad
 **Grading:**
 
 You will be graded by both the correctness and efficiency of your calculation 
-under heavy and arbitary mixtures of incoming `Instruction`s.
+under heavy and arbitrary mixtures of incoming `Instruction`s.
 
-> **_NOTE:_** In this task, a single `Instruction` only runs in a single thread (i.e. no internal parallism within an `Instruction`). 
+> **_NOTE:_** In this task, a single `Instruction` only runs in a single thread (i.e. no internal parallelism within an `Instruction`). 
 
 > **_NOTE:_** The correctness means thread-safety. We allow any order of updates, as long as it is thread-safe.
 
@@ -213,7 +213,7 @@ We can further speed up the process by building an internally-concurrent "init" 
 
 **ToDo:**
 
-In this task, your job is to process an `Instruction` set of "init" and "update". You can start with your codes in Task-1. Try to conduct multiple `cold_start`  parallelly and update the newly initialized embedding collectively without violating **thread-safety**.  Output your final `EmbeddingHolder` of users using the provided `EmbeddingHolder::write_to_stdout()` funciton.  Note that you still need to support multiple concurrent users. 
+In this task, your job is to process an `Instruction` set of "init" and "update". You can start with your codes in Task-1. Try to conduct multiple `cold_start`  in parallel and update the newly initialized embedding collectively without violating **thread-safety**.  Output your final `EmbeddingHolder` of **1) users and 2) items** using the provided `EmbeddingHolder::write_to_stdout()` function.  Note that you still need to support multiple concurrent users. 
 
 **Grading:**
 
@@ -230,7 +230,7 @@ algorithm. This algorithm requires the optimizer to update the embeddings iterat
 **ToDo:**
 
 In this task, you should deal with the data dependency among `Instruction` s. The input `Instruction`  set contains both "init" and "update" tasks. The `iter_idx`s are in ascending order, and takes nonnegative integer values starting from 0. One  `Instruction` should be executed only after all  `Instruction` s with smaller `iter_idx`s are completed to guarantee the dependency correctness (using data from the last iteration as input).  You can start with your codes in Task-2 and try to make all 
-`Instruction`  execution parrallel and thread-safety. Output your final `EmbeddingHolder` of **1) users and 2) items** using `EmbeddingHolder::write_to_stdout()`.
+`Instruction`  execution parallel and thread-safety. Output your final `EmbeddingHolder` of **1) users and 2) items** using `EmbeddingHolder::write_to_stdout()`.
 
 **Grading:**
 
@@ -254,4 +254,3 @@ In this task, the input `Instruction`  set contains all three types of tasks: "i
 **Grading:**
 
 You will be graded by the correctness and delay of your calculation, as well as being able to read the updated embedding after a relatively short period of time.
-
