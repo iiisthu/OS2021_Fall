@@ -202,6 +202,12 @@ void EmbeddingHolder::write_to_stdout() {
     }
 }
 
+EmbeddingHolder::~EmbeddingHolder() {
+    for (Embedding* emb: this->emb_matx) {
+        delete emb;
+    }
+}
+
 void EmbeddingHolder::update_embedding(
         int idx, EmbeddingGradient* gradient, double stepsize) {
     this->emb_matx[idx]->update(gradient, stepsize);

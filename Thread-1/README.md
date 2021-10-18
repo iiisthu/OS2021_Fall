@@ -229,8 +229,7 @@ algorithm. This algorithm requires the optimizer to update the embeddings iterat
 
 **ToDo:**
 
-In this task, you should deal with the data dependency among `Instruction` s. The input `Instruction`  set contains both "init" and "update" tasks. The `iter_idx`s are in ascending order, and takes nonnegative integer values starting from 0. One  `Instruction` should be executed only after all  `Instruction` s with smaller `iter_idx`s are completed to guarantee the dependency correctness (using data from the last iteration as input).  You can start with your codes in Task-2 and try to make all 
-`Instruction`  execution parallel and thread-safety. Output your final `EmbeddingHolder` of **1) users and 2) items** using `EmbeddingHolder::write_to_stdout()`.
+In this task, you should deal with the data dependency among `Instruction` s. The input `Instruction`  set contains both "init" and "update" tasks. The `iter_idx`s are in ascending order, and takes nonnegative integer values starting from 0. One `update` instruction should be executed only after all `update` instructions with smaller `iter_idx`s are completed to guarantee the dependency correctness (using data from the last iteration as input).  You can start with your codes in Task-2 and try to make all update execution parallel and thread-safety. Output your final `EmbeddingHolder` of **1) users and 2) items** using `EmbeddingHolder::write_to_stdout()`.
 
 **Grading:**
 
@@ -247,9 +246,11 @@ allowing the update to happen, and being able to use some quite recent updated e
 
 **ToDo:**
 
-In this task, the input `Instruction`  set contains all three types of tasks: "init", "update", and "recommend". Note that the "recommend" instruction contains an `iter_idx`, and you should use the embeddings after the updates with index `iter_idx` finish. If a recommend instruction be scheduled before any updates, it will have `iter_idx=-1`. You can start with your codes in Task-3. You should output the recommend result as soon as you get it by calling the provided `Embedding::write_to_stdout()` (we accept all possible order of correct outputs). The delay of recommender response will impact your final score.  There is no need to output the final `EmbeddingHolder` in this tasks.
+In this task, the input `Instruction`  set contains all three types of tasks: "init", "update", and "recommend". Note that the "recommend" instruction contains an `iter_idx`, and you should use the embeddings after the updates with index `iter_idx` finish. A recommend instruction with `iter_idx=-1` can be scheduled before any updates. You can start with your codes in Task-3. You should output the recommend result as soon as you get it by calling the provided `Embedding::write_to_stdout()` (we accept all possible order of correct outputs). The delay of recommender response will impact your final score.  There is no need to output the final `EmbeddingHolder` in this tasks.
 
 > **_NOTE:_** You should output your recommend results in a thread-safe manner, too.
+
+> **_NOTE:_** In this task, update instructions still have `iter_idx` constraints. Recommend instructions can be executed after update instructions with larger `iter_idx`.
 
 **Grading:**
 

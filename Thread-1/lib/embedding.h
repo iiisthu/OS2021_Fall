@@ -18,6 +18,7 @@ public:
     Embedding(int, double*);
     Embedding(int, std::string);
     Embedding(Embedding*);
+    ~Embedding() { delete []this->data; }
     double* get_data() { return this->data; }
     int get_length() { return this->length; }
     void update(Embedding*, double);
@@ -45,6 +46,7 @@ class EmbeddingHolder{
 public:
     EmbeddingHolder(std::string filename);
     EmbeddingHolder(EmbeddingMatrix &data);
+    ~EmbeddingHolder();
     static EmbeddingMatrix read(std::string);
     void write_to_stdout();
     void write(std::string filename);
