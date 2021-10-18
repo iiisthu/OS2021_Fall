@@ -27,7 +27,8 @@ double binary_cross_entropy(double y_true, double y_pred) {
 }
 
 double binary_cross_entropy_backward(double y_true, double y_pred) {
-    return y_true / y_pred - (1.0 - y_true) / (1.0 - y_pred);
+    double eps = 1e-8;
+    return (y_true - y_pred) / (eps + (1.0 - y_pred) * y_pred);
 }
 
 AutoTimer::AutoTimer(std::string name) : 
