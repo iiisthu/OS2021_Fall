@@ -28,8 +28,6 @@ namespace proj2 {
     /* ChildRowToMolokai should be called when a child pilots the boat
        from Oahu to Molokai */
     void BoatGrader:: ChildRowToMolokai() {
-    	//System.out.println(children_on_oahu+" "+boat_on_oahu+" "+childrenInit);
-    	//std::cout<<children_on_oahu<<" "<<boat_on_oahu<<" "<<childrenInit<<std::endl;
         boatAssert(children_on_oahu > 0 && boat_on_oahu && childrenInit > 0, "wrong Child rowing to Molokai.\n", CONDITION_MISMATCH);
         children_on_oahu--;
         children_on_molokai++;
@@ -106,24 +104,19 @@ namespace proj2 {
     }
     
 
-    int BoatGrader::adultsLeft()
-    {
+    int BoatGrader::adultsLeft() {
         return adults_on_oahu;
     }
 
-    int BoatGrader::childrenLeft()
-    {
+    int BoatGrader::childrenLeft() {
         return children_on_oahu;
     }
 
-    bool BoatGrader:: passed()
-    {
-        //cout<<"c o: " << std::to_string(children_on_oahu) << "  c m: " << std::to_string(children_on_molokai) << "  a o: " << std::to_string(adults_on_oahu) << "  a m: " << std::to_string(adults_on_molokai));
+    bool BoatGrader:: passed() {
         return children_on_oahu == 0 && adults_on_oahu == 0;
     }
 
-    int BoatGrader::points()
-    {
+    int BoatGrader::points() {
         if(error_occured)
             return 0;
         return children_on_oahu != 0 || adults_on_oahu != 0 ? 1 : 2;
