@@ -9,7 +9,8 @@ namespace proj2 {
 enum RESOURCE {
     GPU = 0,
     MEMORY,
-    DISK
+    DISK,
+    NETWORK
 };
 
 class ResourceManager {
