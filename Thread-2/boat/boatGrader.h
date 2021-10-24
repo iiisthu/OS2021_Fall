@@ -43,7 +43,6 @@ public:
 	
 	void initializeChild();
 	
-	//NEW ADDITION FOR 2014
 	void initializeAdult();
 
     /* ChildRowToMolokai should be called when a child pilots the boat
