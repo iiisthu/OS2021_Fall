@@ -255,3 +255,12 @@ In this task, the input `Instruction`  set contains all three types of tasks: "i
 **Grading:**
 
 You will be graded by the correctness and delay of your recommendation (from the programs' start to recommend result output), as well as being able to read the updated embedding after a relatively short period of time.
+
+
+## Task-6: Inplace recommendation and update
+
+The goal of this task is the same as Task-4, except that you need to implement in-place updates and recommendations.
+That is, you should not copy embeddings and then do the calculation on the copies.
+Other instructions stay the same as Task-4. If your implementations are already an in-place version in Task-4,
+you should implement a version that copies the embeddings from the embedding holder (this
+one should be faster, as it trades space for time).
