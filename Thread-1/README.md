@@ -256,7 +256,6 @@ In this task, the input `Instruction`  set contains all three types of tasks: "i
 
 You will be graded by the correctness and delay of your recommendation (from the programs' start to recommend result output), as well as being able to read the updated embedding after a relatively short period of time.
 
-
 ## Task-5: Updating the embedding with flexible consistency
 
 Sequential instruction execution obeying the data dependency guarantees the data consistency among nodes but may block some tasks and hurt the efficiency with non-uniform workload or node speed. Purely independent tasks improve system efficiency via parallelizing but lead to data inconsistency among nodes. Fortunately, some tasks may be less sensitive to this inconsistency and allow us to break the data dependency. Therefore, the best trade-off between system efficiency and statistic efficiency is to give the designer flexibility in defining consistency models. In this task, your job is to implement the flexible consistency model. 
@@ -275,3 +274,11 @@ You can start with your codes in Task-4. You should output the recommendation re
 **Grading:**
 
 You will be graded by the correctness and delay of your recommendation (from the programs' start to recommend result output), as well as being able to read the updated embedding after a relatively short period of time.
+
+## Task-6: Inplace recommendation and update
+
+The goal of this task is the same as Task-4, except that you need to implement in-place updates and recommendations.
+That is, you should not copy embeddings and then do the calculation on the copies.
+Other instructions stay the same as Task-4. If your implementations are already an in-place version in Task-4,
+you should implement a version that copies the embeddings from the embedding holder (this
+one should be faster, as it trades space for time).
