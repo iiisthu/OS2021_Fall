@@ -36,5 +36,7 @@ sequentially even when it is apparently parallelizable (e.g. two instructions
 without any overlap on resource requests). We guarantee that all the
 instructions can finish when executed sequentially.
 
-For grading, we will time the total execution time of your program under
+## Grading
+
+We will time the total execution time of your program under
 different input instructions.
