@@ -21,22 +21,4 @@ bool randbit() {
     return rand() % 2 > 0;
 }
 
-std::vector<Instruction> read_instruction(std::string file) {
-    std::vector<Instruction> result;
-    std::ifstream ifs(file);
-    std::string line;
-    int data;
-    if (ifs.is_open()) {
-        while (std::getline(ifs, line)) {
-            Instruction inst;
-            std::stringstream ss(line);
-            while (ss >> data) {
-                inst.push_back(data);
-            }
-            result.push_back(inst);
-        }
-    }
-    return result;
-}
-
 }
