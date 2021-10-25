@@ -16,7 +16,6 @@ double similarity(Embedding* embA, Embedding* embB) {
     return similarity;
 }
 
-// NOTE: do not rely on this exact implementation -- it may get modified.
 EmbeddingGradient* calc_gradient(Embedding* embA, Embedding* embB, int label) {
     /* For simplicity, here we just simulate the gradient backprop for:
         1. a dot product between embeddings

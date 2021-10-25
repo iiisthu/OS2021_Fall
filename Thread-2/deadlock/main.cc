@@ -39,6 +39,15 @@ std::vector<Instruction> read_instruction(std::ifstream ifs) {
     return result;
 }
 
+void run_instruction(ResourceManager *mgr, Instruction inst) {
+    auto rsc1 = static_cast<RESOURCE>(inst[0]);
+    auto rsc2 = static_cast<RESOURCE>(inst[1]);
+    int st1 = inst.size() > 4? inst[4]: -1;
+    int st2 = inst.size() > 5? inst[5]: -1;
+    int ro = inst.size() > 6? inst[6]: -1;
+    workload(mgr, rsc1, rsc2, inst[2], inst[3], st1, st2, ro);
+}
+
 }
 
 int main(int argc, char *argv[]) {
@@ -52,6 +61,6 @@ int main(int argc, char *argv[]) {
     std::vector<proj2::Instruction> instructions = proj2::read_instruction(ifs);
     ifs.close();
 
-    // Run the instructions in parallel
+    // Run the instructions in parallel without deadlocks
     return 0;
 }

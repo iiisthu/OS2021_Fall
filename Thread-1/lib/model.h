@@ -6,9 +6,6 @@
 
 namespace proj1 {
 
-/* NOTE: DO NOT rely on the implementation here. We may
-         change the implemenation details.
-*/
 double similarity(Embedding* entityA, Embedding* entityB);
 
 EmbeddingGradient* calc_gradient(Embedding* entityA, Embedding* entityB, int label);

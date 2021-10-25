@@ -6,8 +6,9 @@
 namespace proj2 {
 
 void workload(ResourceManager *mgr, RESOURCE rsc1, RESOURCE rsc2,
-              int rsc1_amount, int rsc2_amount, int reverse_order,
-              int sleep_time1, int sleep_time2) {
+              int rsc1_amount, int rsc2_amount,
+              int sleep_time1, int sleep_time2,
+              int reverse_order) {
     // Randomness
     if (reverse_order < 0) {
         reverse_order = randbit();

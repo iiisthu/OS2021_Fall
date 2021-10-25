@@ -14,9 +14,9 @@ void workload(
     RESOURCE rsc2,
     int rsc1_amount,
     int rsc2_amount,
-    int reverse_order = -1,  // -1 for random, 1 for true, 0 for false
     int sleep_time1 = -1,  // -1 for random
-    int sleep_time2 = -1   // -1 for random
+    int sleep_time2 = -1,   // -1 for random
+    int reverse_order = -1  // -1 for random, 1 for true, 0 for false
 );
 
 }  // namespce: proj2
