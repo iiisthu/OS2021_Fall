@@ -26,11 +26,12 @@ requesting them) to bypass the deadlock problem.
 
 Given the initial amount of resources and the instructions (i.e. workload
 arguments, see `main.cc` for example usage), your job is to run these
-instructions in parallel without deadlocks.
-You may prevent the deadlock from happening or recover from deadlocked threads.
-In some cases where two instructions cannot run in parallel, you can run them
-sequentially. However, in general cases, you should make full use of
-multi-threading. You will get penalized if all instructions are executed
+instructions in parallel without deadlocks. The order of the instructions can be
+arbitrary -- you can start them simultaneously or sequentially, as long as they
+are thread safe. You may prevent the deadlock from happening or recover from
+deadlocked threads. In some cases where two instructions cannot run in parallel,
+you can run them sequentially. However, in general cases, you should make full
+use of multi-threading. You will get penalized if all instructions are executed
 sequentially even when it is apparently parallelizable (e.g. two instructions
 without any overlap on resource requests). We guarantee that all the
 instructions can finish when executed sequentially.

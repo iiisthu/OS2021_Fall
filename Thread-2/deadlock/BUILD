@@ -13,4 +13,7 @@ cc_binary(
     copts = [
         "-std=c++11",
     ],
+    linkopts = [
+        "-pthread",
+    ]
 )

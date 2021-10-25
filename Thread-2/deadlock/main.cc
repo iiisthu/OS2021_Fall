@@ -6,6 +6,8 @@
 #include "lib/workload.h"
 #include "lib/resource_manager.h"
 
+#include <thread>
+
 namespace proj2 {
 
 std::map<RESOURCE, int> read_resource_budget(std::ifstream &ifs) {
@@ -63,5 +65,14 @@ int main(int argc, char *argv[]) {
     proj2::AutoTimer timer("deadlock");
 
     // Run the instructions in parallel without deadlocks
+    std::vector<std::thread*> pool;
+    for (auto inst: instructions) {
+        pool.push_back(new std::thread(&proj2::run_instruction, mgr, inst));
+    }
+
+    for (auto t: pool) {
+        t->join();
+    }
+
     return 0;
 }
