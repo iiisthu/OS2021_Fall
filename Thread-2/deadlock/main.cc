@@ -8,7 +8,7 @@
 
 namespace proj2 {
 
-std::map<RESOURCE, int> read_resource_budget(std::ifstream ifs) {
+std::map<RESOURCE, int> read_resource_budget(std::ifstream &ifs) {
     int amount;
     std::string line;
     std::map<RESOURCE, int> budget;
@@ -24,7 +24,7 @@ std::map<RESOURCE, int> read_resource_budget(std::ifstream ifs) {
 
 using Instruction = std::vector<int>;
 
-std::vector<Instruction> read_instruction(std::ifstream ifs) {
+std::vector<Instruction> read_instruction(std::ifstream &ifs) {
     int value;
     std::string line;
     std::vector<Instruction> result;

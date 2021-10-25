@@ -31,9 +31,6 @@ cc_library(
     hdrs = [
         "resource_manager.h",
         ],
-	deps = [
-        ":utils_lib"
-    ],
 	visibility = [
 		"//visibility:public",
 	],
@@ -57,6 +54,10 @@ cc_library(
     hdrs = [
         "workload.h",
         ],
+    deps = [
+        ":resource_manager_lib",
+        ":utils_lib",
+    ],
 	visibility = [
 		"//visibility:public",
 	],
