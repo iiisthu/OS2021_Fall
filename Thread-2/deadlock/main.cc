@@ -60,6 +60,7 @@ int main(int argc, char *argv[]) {
         new proj2::ResourceManager(proj2::read_resource_budget(ifs));
     std::vector<proj2::Instruction> instructions = proj2::read_instruction(ifs);
     ifs.close();
+    proj2::AutoTimer timer("deadlock");
 
     // Run the instructions in parallel without deadlocks
     return 0;
