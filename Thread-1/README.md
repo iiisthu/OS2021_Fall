@@ -255,3 +255,23 @@ In this task, the input `Instruction`  set contains all three types of tasks: "i
 **Grading:**
 
 You will be graded by the correctness and delay of your recommendation (from the programs' start to recommend result output), as well as being able to read the updated embedding after a relatively short period of time.
+
+
+## Task-5: Updating the embedding with flexible consistency
+
+Sequential instruction execution obeying the data dependency guarantees the data consistency among nodes but may block some tasks and hurt the efficiency with non-uniform workload or node speed. Purely independent tasks improve system efficiency via parallelizing but lead to data inconsistency among nodes. Fortunately, some tasks may be less sensitive to this inconsistency and allow us to break the data dependency. Therefore, the best trade-off between system efficiency and statistic efficiency is to give the designer flexibility in defining consistency models. In this task, your job is to implement the flexible consistency model. 
+
+**ToDo:**
+
+In this task, the input Instruction set contains all three types of tasks: "init", "update", and "recommend". Note that the "recommend" instruction contains an iter_idx, and you should use the embeddings after the updates with index iter_idx finish. 
+The difference is: we relax the data dependency constraints on updates. We define the requirement of data consistency by the maximal delay time $\tau$: a new task will be blocked until all previous tasks $\tau$ iterations ago have been finished. Note that a task should also not start earlier than a task updating completely the same targets (user and item) but with a smaller iter_idx (by definition). That means compared with Task-4, you can try to launch an update earlier if all updates $\tau$ iterations ago on different users or items and all previous updates on the same <users, item> have been finished. In the implementation, we set $\tau$ to 3.
+
+You can start with your codes in Task-4. You should output the recommendation result as soon as you get it by calling the provided Embedding::write_to_stdout() (we accept all possible orders of correct outputs). The delay of recommender response will impact your final score. There is no need to output the final EmbeddingHolder in this task.
+
+> **_NOTE:_** You should output your recommend results in a thread-safe manner, too.
+
+> **_NOTE:_** In this task, update instructions still have `iter_idx` constraints. Recommend instructions can be executed after update instructions with larger `iter_idx`.
+
+**Grading:**
+
+You will be graded by the correctness and delay of your recommendation (from the programs' start to recommend result output), as well as being able to read the updated embedding after a relatively short period of time.
