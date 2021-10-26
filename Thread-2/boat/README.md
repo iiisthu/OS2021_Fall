@@ -1,5 +1,7 @@
 # Boat Question
 
+[Background] This question is adapted from previous years.  It has nothing to do with the previous recommendation systems.  Please treat it as a separate question letting you write a thread model for a real-world simulator.  
+
 A number of Hawaiian adults and children are trying to get from Oahu to Molokai. Unfortunately, they have only one boat that can carry maximally two children or one adult (but **not** one child and one adult). The boat can be rowed back to Oahu, but it requires a pilot to do so.
 
 **Requirements:**
