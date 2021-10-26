@@ -1,27 +1,25 @@
+#include <mutex>
+#include <condition_variable>
 #include "resource_manager.h"
 
 namespace proj2 {
 
-int ResourceManager::request(RESOURCE r, int amount) {
-    if (amount < 0)  return -1;  // Negative amount
-    if (amount == 0) return 0;
-    this->resource_mutex[r].lock();
-    if (this->resource_amount[r] >= amount) {
-        this->resource_amount[r] -= amount;
-        this->resource_mutex[r].unlock();
-        return 0;
-    }
+void ResourceManager::request(RESOURCE r, int amount) {
+    if (amount <= 0)  return;
+
+    std::unique_lock<std::mutex> lk(this->resource_mutex[r]);
+    this->resource_cv[r].wait(
+        lk, [this, r, amount] { return this->resource_amount[r] >= amount; }
+    );
+    this->resource_amount[r] -= amount;
     this->resource_mutex[r].unlock();
-    return 1;  // Not enough resource
 }
 
-int ResourceManager::release(RESOURCE r, int amount) {
-    if (amount < 0)  return -1;
-    if (amount == 0) return 0;
-    this->resource_mutex[r].lock();
+void ResourceManager::release(RESOURCE r, int amount) {
+    if (amount <= 0)  return;
+    std::unique_lock<std::mutex> lk(this->resource_mutex[r]);
     this->resource_amount[r] += amount;
-    this->resource_mutex[r].unlock();
-    return 0;
+    this->resource_cv[r].notify_all();
 }
 
 } // namespace: proj2
