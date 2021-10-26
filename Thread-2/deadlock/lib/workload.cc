@@ -1,3 +1,4 @@
+#include <thread>
 #include <utility>
 #include "workload.h"
 #include "resource_manager.h"
@@ -5,7 +6,8 @@
 
 namespace proj2 {
 
-void workload(ResourceManager *mgr, RESOURCE rsc1, RESOURCE rsc2,
+void workload(ResourceManager *mgr,
+              RESOURCE rsc1, RESOURCE rsc2,
               int rsc1_amount, int rsc2_amount,
               int sleep_time1, int sleep_time2,
               int reverse_order) {

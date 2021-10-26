@@ -1,6 +1,7 @@
 #ifndef DEADLOCK_LIB_WORKLOAD_H_
 #define DEADLOCK_LIB_WORKLOAD_H_
 
+#include <thread>
 #include "resource_manager.h"
 
 namespace proj2 {
