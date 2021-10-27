@@ -2,7 +2,6 @@
 #include <thread>
 #include <chrono>
 #include <condition_variable>
-#include <iostream>
 #include "resource_manager.h"
 
 namespace proj2 {

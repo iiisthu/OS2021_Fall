@@ -1,3 +1,4 @@
+#include <thread>
 #include <vector>
 #include <string>
 #include <fstream>
@@ -6,9 +7,6 @@
 #include "lib/workload.h"
 #include "lib/thread_manager.h"
 #include "lib/resource_manager.h"
-
-#include <thread>
-#include <iostream>
 
 namespace proj2 {
 
@@ -44,7 +42,6 @@ std::vector<Instruction> read_instruction(std::ifstream &ifs) {
 }
 
 void run_instruction(ResourceManager *mgr, Instruction inst) {
-    std::cout << "Start running " << std::this_thread::get_id() << std::endl;
     auto rsc1 = static_cast<RESOURCE>(inst[0]);
     auto rsc2 = static_cast<RESOURCE>(inst[1]);
     int st1 = inst.size() > 4? inst[4]: -1;

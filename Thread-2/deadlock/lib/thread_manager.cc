@@ -1,5 +1,4 @@
 #include "thread_manager.h"
-#include <iostream>
 
 
 namespace proj2 {
