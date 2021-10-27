@@ -1,4 +1,4 @@
-# Deadlock Prevention
+# Deadlock Prevention/Recovery
 
 Real-world computation tasks usually require different resources to run, e.g.
 GPUs, disk spaces for caching dataset, and network bandwidth for communication.
