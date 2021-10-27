@@ -43,7 +43,7 @@ of each user task, your job is to run these tasks concurrently without deadlocks
 To do this, you may prevent the deadlock from happening or recover from
 deadlocked threads.
 
-Each user task is defined as a sequence of the user tasks (i.e., workload
+Each user task is represented as a sequence of integers (i.e., workload
 arguments, see `main.cc` and `workload.h` as an example). The order of different
 tasks are arbitrary -- you can start them simultaneously or sequentially,
 as long as they are thread-safe.
@@ -52,7 +52,7 @@ If you use a prevention method, in cases where two tasks cannot run
 concurrently, the resource manager should deny requests to a task, and the task
 that does not get the resource should wait until it gets the requested resource.  
 
-If you use a detection-and-recover scheme, the resource manager should detect
+If you use a detect-and-recover scheme, the resource manager should detect
 deadlocks and recover by killing a thread. You can assume that all the threads
 are recoverable, as long as you correctly reclaim all resources managed by the
 resource manager.
