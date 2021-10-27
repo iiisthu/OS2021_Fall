@@ -8,7 +8,8 @@ cc_binary(
     deps = [
         "//lib:resource_manager_lib",
         "//lib:utils_lib",
-        "//lib:workload_lib"
+        "//lib:workload_lib",
+        "//lib:thread_manager_lib"
     ],
     copts = [
         "-std=c++11",

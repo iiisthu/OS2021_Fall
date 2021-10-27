@@ -4,9 +4,11 @@
 #include <sstream>
 #include "lib/utils.h"
 #include "lib/workload.h"
+#include "lib/thread_manager.h"
 #include "lib/resource_manager.h"
 
 #include <thread>
+#include <iostream>
 
 namespace proj2 {
 
@@ -42,6 +44,7 @@ std::vector<Instruction> read_instruction(std::ifstream &ifs) {
 }
 
 void run_instruction(ResourceManager *mgr, Instruction inst) {
+    std::cout << "Start running " << std::this_thread::get_id() << std::endl;
     auto rsc1 = static_cast<RESOURCE>(inst[0]);
     auto rsc2 = static_cast<RESOURCE>(inst[1]);
     int st1 = inst.size() > 4? inst[4]: -1;
@@ -58,8 +61,9 @@ int main(int argc, char *argv[]) {
     std::ifstream ifs(datafile);
     if (!ifs.is_open())
         return 1;
-    proj2::ResourceManager *mgr = \
-        new proj2::ResourceManager(proj2::read_resource_budget(ifs));
+    proj2::ThreadManager *tmgr = new proj2::ThreadManager();
+    proj2::ResourceManager *rmgr = \
+        new proj2::ResourceManager(tmgr, proj2::read_resource_budget(ifs));
     std::vector<proj2::Instruction> instructions = proj2::read_instruction(ifs);
     ifs.close();
     proj2::AutoTimer timer("deadlock");
@@ -67,10 +71,12 @@ int main(int argc, char *argv[]) {
     // Run the instructions in parallel without deadlocks
     std::vector<std::thread*> pool;
     for (auto inst: instructions) {
-        pool.push_back(new std::thread(&proj2::run_instruction, mgr, inst));
+        pool.push_back(tmgr->new_thread(&proj2::run_instruction, rmgr, inst));
     }
 
     for (auto t: pool) {
+        auto id = t->get_id();
+        if (tmgr->is_killed(id)) continue;
         t->join();
     }
 

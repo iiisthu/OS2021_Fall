@@ -1,14 +1,8 @@
 #include "thread_manager.h"
+#include <iostream>
 
 
 namespace proj2 {
-
-template <class Fn, class... Args>
-std::thread* ThreadManager::new_thread(Fn&& fn, Args&&... args) {
-    std::thread* th = new std::thread(fn, args...);
-    // You can record the status of the thread here for recovery.
-    this->running_status[th->get_id()] = true;
-}
 
 void ThreadManager::kill(std::thread::id id) {
     /* NOTE: this function does not really kill the thread. This only
@@ -16,6 +10,15 @@ void ThreadManager::kill(std::thread::id id) {
              explicitly within the thread.
     */
     this->running_status[id] = false;
+    this->running_threads[id]->detach();
+}
+
+std::thread* ThreadManager::rerun(std::thread::id id) {
+    if (this->running_status[id]) {
+        // The thread is still running, call kill first or handle error here?
+    }
+    // The parameters are recorded in the lambda functions, just call it
+    return this->new_thread([this, id] {this->functions[id]();});
 }
 
 }

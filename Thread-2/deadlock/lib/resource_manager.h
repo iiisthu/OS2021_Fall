@@ -5,6 +5,7 @@
 #include <mutex>
 #include <thread>
 #include <condition_variable>
+#include "thread_manager.h"
 
 namespace proj2 {
 
@@ -17,14 +18,15 @@ enum RESOURCE {
 
 class ResourceManager {
 public:
-    ResourceManager(std::map<RESOURCE, int> init_count): \
-        resource_amount(init_count) {}
-    void request(RESOURCE, int amount);
+    ResourceManager(ThreadManager *t, std::map<RESOURCE, int> init_count): \
+        resource_amount(init_count), tmgr(t) {}
+    int request(RESOURCE, int amount);
     void release(RESOURCE, int amount);
 private:
     std::map<RESOURCE, int> resource_amount;
     std::map<RESOURCE, std::mutex> resource_mutex;
     std::map<RESOURCE, std::condition_variable> resource_cv;
+    ThreadManager *tmgr;
 };
 
 }  // namespce: proj2

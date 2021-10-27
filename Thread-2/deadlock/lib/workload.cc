@@ -23,9 +23,11 @@ void workload(ResourceManager *mgr,
     sleep_time2 = sleep_time2 < 0? randint(MIN_RUNNING_TIME, MAX_RUNNING_TIME): sleep_time2;
 
     // Request resource -> running -> request another -> running -> release
-    mgr->request(rsc1, rsc1_amount);
+    if (mgr->request(rsc1, rsc1_amount) < 0)  // I'm killed
+        return;
     a_slow_function(sleep_time1);
-    mgr->request(rsc2, rsc2_amount);
+    if (mgr->request(rsc2, rsc2_amount) < 0) // I'm killed
+        return;
     a_slow_function(sleep_time2);
     mgr->release(rsc1, rsc1_amount);
     mgr->release(rsc2, rsc2_amount);

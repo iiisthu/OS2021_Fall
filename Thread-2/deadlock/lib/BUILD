@@ -31,6 +31,9 @@ cc_library(
     hdrs = [
         "resource_manager.h",
         ],
+  deps = [
+	  ":thread_manager_lib",
+      ],
 	visibility = [
 		"//visibility:public",
 	],
@@ -71,4 +74,17 @@ cc_test(
       "@gtest//:gtest_main",
 	  ":workload_lib",
       ],
+)
+
+cc_library(
+    name = "thread_manager_lib",
+    srcs = [
+        "thread_manager.cc",
+        ],
+    hdrs = [
+        "thread_manager.h",
+        ],
+	visibility = [
+		"//visibility:public",
+	],
 )
