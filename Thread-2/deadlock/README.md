@@ -25,7 +25,7 @@ We also provide a simple implementation of a _thread manager_ in
 `lib/thread_manager.h`, with which you are able to create, kill, and restart
 the threads that have been killed. You can add any information you needed to
 the thread manager (see the hints in the code). Note that you should carefully
-release the resources held by a killed thread.
+account for the resources held by the thread after you kill it.
 
 In `lib/workload.h`, we provide an example user task that requests two resource
 types.  Each user task requests two types of resources and uses them for an
