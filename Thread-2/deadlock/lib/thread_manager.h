@@ -33,7 +33,7 @@ std::thread* ThreadManager::new_thread(Fn&& fn, Args&&... args) {
     // Record this thread's pointer for further detach
     this->running_threads[th->get_id()] = th;
 
-    // NOTE: You can record more information of the thread here if needed.
+    // HINT: You can record more information of the thread here if needed.
 
     return th;
 }

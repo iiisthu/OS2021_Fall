@@ -18,7 +18,7 @@ int ResourceManager::request(RESOURCE r, int amount) {
             break;
         } else {
             auto this_id = std::this_thread::get_id();
-            /* NOTE: If you choose to detect the deadlock and recover,
+            /* HINT: If you choose to detect the deadlock and recover,
                      implement your code here to kill and restart threads.
                      Note that you should release this thread's resources
                      properly.

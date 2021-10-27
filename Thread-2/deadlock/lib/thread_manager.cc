@@ -5,8 +5,9 @@ namespace proj2 {
 
 void ThreadManager::kill(std::thread::id id) {
     /* NOTE: this function does not really kill the thread. This only
-             marks the thread as dead. You should call `terminate()`
-             explicitly within the thread.
+             marks the thread as dead. See the implementation in
+             `resource_manager.cc` and `workload.cc` for an example
+             of how to return from a killed thread.
     */
     this->running_status[id] = false;
     this->running_threads[id]->detach();
