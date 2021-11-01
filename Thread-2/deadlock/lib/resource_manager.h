@@ -20,6 +20,7 @@ class ResourceManager {
 public:
     ResourceManager(ThreadManager *t, std::map<RESOURCE, int> init_count): \
         resource_amount(init_count), tmgr(t) {}
+    void budget_claim(std::map<RESOURCE, int> budget);
     int request(RESOURCE, int amount);
     void release(RESOURCE, int amount);
 private:

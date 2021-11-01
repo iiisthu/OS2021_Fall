@@ -28,25 +28,29 @@ the thread manager (see the hints in the code). Note that you should carefully
 account for the resources held by the thread after you kill it.
 
 In `lib/workload.h`, we provide an example user task that requests two resource
-types.  Each user task requests two types of resources and uses them for an
-extended time period.  For each resource type, the thread will request all the
-amount it claims. Note that the requested order of the resources and the
-calculation time can be random. Please inspect the code for details. In this
-experiment, you should not modify this `workload` function (e.g., add a line to
-release all resources right after requesting them). However, you can still add
-your own workload functions to test your implementation.
+types. Each user task requests two types of resources and uses them for an
+extended time period. In this experiment, you should not rely on this `workload`
+function, as we may adopt different implementation during testing. However, for
+any workload type, the worker thread will call `ResourceManager::budget_claim`
+to claim all resources it is going to use. The worker threads will eventually
+use all the resources they claim. It may also release some resources during
+processing. You are encouraged to add your own workload functions to test the
+correctness of your implementation under different circumstances.
+
+In the example `main.cc` and `workload.h`, we provide a deadlock case example.
+Each user task is represented as a sequence of integers (i.e., workload
+arguments, see `main.cc` and `workload.h` for details). The order of different
+tasks are arbitrary -- you can start them simultaneously or sequentially,
+as long as they are thread-safe.
 
 ## TODO
 
 Given the initial number of instances of each resource type and the definition
 of each user task, your job is to run these tasks concurrently without deadlocks.
 To do this, you may prevent the deadlock from happening or recover from
-deadlocked threads.
-
-Each user task is represented as a sequence of integers (i.e., workload
-arguments, see `main.cc` and `workload.h` as an example). The order of different
-tasks are arbitrary -- you can start them simultaneously or sequentially,
-as long as they are thread-safe.
+deadlocked threads by implementing a smart `ResourceManager`. Note that your
+implementation of the resource manager should not rely on the implementation of
+the workload.
 
 If you use a prevention method, in cases where two tasks cannot run
 concurrently, the resource manager should deny requests to a task, and the task

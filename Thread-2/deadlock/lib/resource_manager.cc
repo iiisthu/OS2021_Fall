@@ -40,4 +40,9 @@ void ResourceManager::release(RESOURCE r, int amount) {
     this->resource_cv[r].notify_all();
 }
 
+void ResourceManager::budget_claim(std::map<RESOURCE, int> budget) {
+    // This function is called when some workload starts.
+    // The workload will eventually consume all resources it claims
+}
+
 } // namespace: proj2

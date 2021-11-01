@@ -1,3 +1,4 @@
+#include <map>
 #include <thread>
 #include <utility>
 #include "workload.h"
@@ -11,6 +12,11 @@ void workload(ResourceManager *mgr,
               int rsc1_amount, int rsc2_amount,
               int sleep_time1, int sleep_time2,
               int reverse_order) {
+    // Inform the resource manager about resource budget
+    std::map<RESOURCE, int> budget = {
+        {rsc1, rsc1_amount}, {rsc2, rsc2_amount}
+    };
+    mgr->budget_claim(budget);
     // Randomness
     if (reverse_order < 0) {
         reverse_order = randbit();

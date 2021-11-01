@@ -18,7 +18,7 @@ void workload(
     int sleep_time1 = -1,  // -1 for random
     int sleep_time2 = -1,   // -1 for random
     int reverse_order = -1  // -1 for random, 1 for true, 0 for false
-);
+);  // workload will call mgr->budget_claim when started
 
 }  // namespce: proj2
 
