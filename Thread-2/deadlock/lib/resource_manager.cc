@@ -128,7 +128,6 @@ int ResourceManager::request(RESOURCE r, int amount) {
                 if (r==3) NETWORK_alloc[std::this_thread::get_id()] -= amount;
                 std::cout<<"++"<<std::this_thread::get_id()<<std::endl;
                 this->resource_cv.wait(lock);
-                //std::unique_lock<std::mutex> lock(this->resource_mutex);
                 std::cout<<"wakeup"<<std::this_thread::get_id()<<std::endl;
             }
         }
