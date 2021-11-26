@@ -20,10 +20,14 @@ class ResourceManager {
 public:
     ResourceManager(ThreadManager *t, std::map<RESOURCE, int> init_count): \
         resource_amount(init_count), tmgr(t) {}
-    std::map<std::thread::id, int> GPU_request;
-    std::map<std::thread::id, int> MEMORY_request;
-    std::map<std::thread::id, int> DISK_request;
-    std::map<std::thread::id, int> NETWORK_request;
+    std::map<std::thread::id, int> GPU_claim;
+    std::map<std::thread::id, int> MEMORY_claim;
+    std::map<std::thread::id, int> DISK_claim;
+    std::map<std::thread::id, int> NETWORK_claim;
+    //std::map<std::thread::id, int> GPU_request;
+    //std::map<std::thread::id, int> MEMORY_request;
+    //std::map<std::thread::id, int> DISK_request;
+    //std::map<std::thread::id, int> NETWORK_request;
     std::map<std::thread::id, int> GPU_alloc;
     std::map<std::thread::id, int> MEMORY_alloc;
     std::map<std::thread::id, int> DISK_alloc;
@@ -36,11 +40,14 @@ public:
     void release(RESOURCE, int amount);
 private:
     std::map<RESOURCE, int> resource_amount;
-    std::map<RESOURCE, std::mutex> resource_mutex;
-    std::condition_variable request_cv;
-    std::mutex request_mutex;
-    std::mutex is_suspend_mutex;
-    std::map<RESOURCE, std::condition_variable> resource_cv;
+    //std::map<RESOURCE, std::mutex> resource_mutex;
+    //std::condition_variable alloc_cv;
+    //std::mutex alloc_mutex;
+    //std::mutex is_suspend_mutex;
+    //std::mutex avail_mutex;
+    std::mutex resource_mutex;
+    std::condition_variable resource_cv;
+    //std::map<RESOURCE, std::condition_variable> resource_cv;
     ThreadManager *tmgr;
 };
 
