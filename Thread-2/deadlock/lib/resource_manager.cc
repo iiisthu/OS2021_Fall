@@ -117,7 +117,7 @@ int ResourceManager::request(RESOURCE r, int amount) {
             bool s = safe(GPU_amount, MEMORY_amount, DISK_amount, NETWORK_amount, GPU_claim, MEMORY_claim, DISK_claim, NETWORK_claim, GPU_alloc, MEMORY_alloc, DISK_alloc, NETWORK_alloc);
             if (s==true) {
                 std::cout<<"--"<<std::this_thread::get_id()<<std::endl;
-                this->resource_mutex.unlock();
+                //this->resource_mutex.unlock();
                 return 0;
             }
             else {
@@ -224,7 +224,7 @@ void ResourceManager::budget_claim(std::map<RESOURCE, int> budget) {
     NETWORK_alloc.insert(std::map<std::thread::id, int>::value_type(this_id, 0));
     
     std::cout<<"**"<<std::this_thread::get_id()<<std::endl;
-    this->resource_mutex.unlock();
+    //this->resource_mutex.unlock();
     return;
 }
 

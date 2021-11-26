@@ -41,10 +41,6 @@ public:
 private:
     std::map<RESOURCE, int> resource_amount;
     //std::map<RESOURCE, std::mutex> resource_mutex;
-    //std::condition_variable alloc_cv;
-    //std::mutex alloc_mutex;
-    //std::mutex is_suspend_mutex;
-    //std::mutex avail_mutex;
     std::mutex resource_mutex;
     std::condition_variable resource_cv;
     //std::map<RESOURCE, std::condition_variable> resource_cv;
