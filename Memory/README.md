@@ -50,7 +50,7 @@ Implement a clock algorithm (approximate LRU) for page replacement instead of yo
 
 ## Q3
 
-Change the `mma` memory allocation from 1 to 10 and re-run test 2 for both algorithms.  Observe and record the time it costs to pass the tests. Analyze the reason for the result variation and the differences between the two algorithms.
+Vary the `mma` memory allocation from 1 to 10 (1,2,...,10) and re-run test 2 for both algorithms.  Observe and record the time it costs to pass the tests. Analyze the reason for the result variation and the differences between the two algorithms.
 
 ## Q4
 
@@ -63,6 +63,6 @@ We will use extra workloads to test your `mma`, so your implementation should no
 1. Correctness: pass all tests in  `mma_test.cc` and extra tests;
 2. Performance: we will consider the time it takes to pass the tests. For concurrent tests, it should
     be significantly faster than running all tasks sequentially - so you should not let `mma` process requests one by one. 
-3. Observation and analysis: submit a PDF to display your experiment results in Q1 - Q4 and try to explain the rationales behind the results.
+3. Observation and analysis: submit a PDF to display your experiment results in Q1 - Q4 and try to explain the rationales behind the results. Pack your PDF and diff files as a zip for submission.
 
 Submit the diff file that can be correctly applied to `ec3155c3`.
