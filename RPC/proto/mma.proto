@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+option objc_class_prefix = "MMA";
+
+package mma;
+
+// define your service here
