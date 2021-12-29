@@ -2,13 +2,20 @@
 #include <iostream>
 #include <sstream>
 #include <cmath>
+#include <atomic>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <future>
 
 #include "utils.h"
 #include "embedding.h"
 
-namespace proj1 {
+namespace proj1 { 
+    RWLock write_to_stdout_lock = RWLock();
 
 Embedding::Embedding(int length) {
+    embbedingAssert(length > 0, "Non-positive length encountered!", NON_POSITIVE_LEN);
     this->data = new double[length];
     for (int i = 0; i < length; ++i) {
         this->data[i] = (double) i / 10.0;
@@ -67,8 +74,10 @@ std::string Embedding::to_string() {
 }
 
 void Embedding::write_to_stdout() {
+    write_to_stdout_lock.write_lock();
     std::string prefix("[OUTPUT]");
     std::cout << prefix << this->to_string() << '\n';
+    write_to_stdout_lock.write_unlock();
 }
 
 Embedding Embedding::operator+(const Embedding &another) {
@@ -137,7 +146,9 @@ Embedding Embedding::operator/(const double value) {
 
 bool Embedding::operator==(const Embedding &another) {
     for (int i = 0; i < this->length; ++i) {
-        if(fabs(this->data[i]-another.data[i])>1.0e-6)return false;
+        if(fabs(this->data[i]-another.data[i])>1.0e-6) {
+            return false;
+        }
     }
     return true;
 }
@@ -214,8 +225,9 @@ void EmbeddingHolder::update_embedding(
 }
 
 bool EmbeddingHolder::operator==(const EmbeddingHolder &another) {
-    if (this->get_n_embeddings() != another.emb_matx.size())
+    if (this->get_n_embeddings() != another.emb_matx.size()) {
         return false;
+    }
     for (int i = 0; i < (int)this->emb_matx.size(); ++i) {
         if(!(*(this->emb_matx[i]) == *(another.get_embedding(i)))){
         	return false;

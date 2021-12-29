@@ -74,20 +74,17 @@ void run_one_instruction(Instruction inst, EmbeddingHolder* users, EmbeddingHold
             Embedding* user = users->get_embedding(user_idx);
             Embedding* item = items->get_embedding(item_idx);
             
-            std::future<proj1::EmbeddingGradient*> t_user = std::async(proj1::calc_gradient, user, item, label);
-            std::future<proj1::EmbeddingGradient*> t_item = std::async(proj1::calc_gradient, item, user, label);
-            
-            EmbeddingGradient* gradient_user = t_user.get();
-            EmbeddingGradient* gradient_item = t_item.get();
-
+            EmbeddingGradient* gradient = calc_gradient(user, item, label);
             user->lock.write_lock();
-            item->lock.write_lock();
-            items->update_embedding(item_idx, gradient_user, 0.001);
-            users->update_embedding(user_idx, gradient_item, 0.01);
-            item->lock.write_unlock();
+            users->update_embedding(user_idx, gradient, 0.01);
             user->lock.write_unlock();
-            delete gradient_user;
-            delete gradient_item;
+            delete gradient;
+            
+            gradient = calc_gradient(item, user, label);
+            item->lock.write_lock();
+            items->update_embedding(item_idx, gradient, 0.001);
+            item->lock.write_unlock();
+            delete gradient;
 
             if (epoch != -1) {
                 printf("Finished! epoch = %d\n", epoch);
@@ -106,39 +103,20 @@ void run_one_instruction(Instruction inst, EmbeddingHolder* users, EmbeddingHold
         }
         case RECOMMEND: {
             int user_idx = inst.payloads[0];
+            Embedding* user = users->get_embedding(user_idx);
             std::vector<Embedding*> item_pool;
             int iter_idx = inst.payloads[1] + 1;
-            while(true) {
-                counter_lock->read_lock();
-                bool flag = true;
-                if(iter_idx > 0) {
-                    for(int i=0;i<iter_idx;++i) {
-                        if((*(counter->at(i))) != 0) {
-                            flag = false;
-                            break;
-                        }
-                    }
-                }
-                if(iter_idx == 0 || flag == true) {
-                    counter_lock->read_unlock();
-                    printf("Recommend! epoch = %d\n", iter_idx);
-                    proj1::EmbeddingHolder* users_copy = users;
-                    proj1::EmbeddingHolder* items_copy = items;
-                    Embedding* user = users_copy->get_embedding(user_idx);
-                    for (unsigned int i = 2; i < inst.payloads.size(); ++i) {
-                    int item_idx = inst.payloads[i];
-                    item_pool.push_back(items_copy->get_embedding(item_idx));
-                    }
-                Embedding* recommendation = recommend(user, item_pool);
-                recommendation->write_to_stdout();
-                break;
-                }
-                else {
-                    counter_lock->read_unlock();
-                }
+            epoch_lock->at(iter_idx)->read_lock();
+            printf("Recommend! epoch = %d\n", iter_idx);
+
+            for (unsigned int i = 2; i < inst.payloads.size(); ++i) {
+                int item_idx = inst.payloads[i];
+                item_pool.push_back(items->get_embedding(item_idx));
             }
-            
-            //epoch_lock->at(iter_idx)->read_unlock();
+            Embedding* recommendation = recommend(user, item_pool);
+            epoch_lock->at(iter_idx)->read_unlock();
+
+            recommendation->write_to_stdout();
             break;
         }
     }
@@ -153,7 +131,7 @@ int main(int argc, char *argv[]) {
     proj1::EmbeddingHolder* items = new proj1::EmbeddingHolder("data/q4.in");
     proj1::Instructions instructions = proj1::read_instructrions("data/q4_instruction.tsv");
     {
-    proj1::AutoTimer timer("q5");  // using this to print out timing of the block
+    proj1::AutoTimer timer("q4");  // using this to print out timing of the block
 
     // Preprocesssing
     int max_epoch = -1;
